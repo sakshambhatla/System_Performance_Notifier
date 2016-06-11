@@ -1,27 +1,23 @@
 import os
-import re
 import time
 import sqlClass
 
 sqlObj = sqlClass.sqlClass()
+sqlObj.dropTable()
 sqlObj.createTable()
-usage=10.5
-sqlObj.insertEntry(usage)
-
 
 def main():
+    id_no=1;
     while True:
         df_out = os.popen("df .").readlines()
-        #print dir[1]
         df_out = ''.join(df_out[1])
         temp=df_out.split(' ');
-        temp2=temp[9].split('%')
-        print temp2[0]
+        usage=temp[9].split('%')
+        print usage[0]
         time.sleep(2)
-        #matchObj = re.match( r'.*\s+([0-9]+)\%.*', dir, re.M|re.I)
-        #matchObj = re.match('.*(\d+)\%.*', dir, re.M|re.I)
-        #print dir
-        #print "object match is - ", matchObj.group()
+        sqlObj.insertEntry(id_no, str(usage[0]));
+        id_no = id_no +1;
 
 if __name__ == '__main__':
+    print "running systeminfo main"
     main()

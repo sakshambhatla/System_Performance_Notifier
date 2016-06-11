@@ -1,8 +1,6 @@
 import MySQLdb
 import time
 
-time_string=time.strftime('%Y-%m-%d %H:%M:%S')
-
 
 class sqlClass:
     '''Handles all DB communication.'''
@@ -11,9 +9,11 @@ class sqlClass:
         self.db = MySQLdb.connect("localhost","root","root","SYSTEM_MONITOR" )
         self.cur = self.db.cursor()
         print "connected to db"
+
+    def dropTable(self):
         # Drop table if it already exist using execute() method.
-        #self.cur.execute("DROP TABLE IF EXISTS CPU")
-        #print "dropping table if existed"
+        self.cur.execute("DROP TABLE IF EXISTS CPU")
+        print "dropping table if existed"
 
     def __del__(self):
         print "shutting down db"
@@ -39,18 +39,16 @@ class sqlClass:
         USE_PERCENT FLOAT );"""
         self.executeCmd(query)
 
-    def insertEntry(self,usage):
-        query = "INSERT INTO CPU (ID_NO, TIME_DATA, USE_PERCENT) VALUES (1, NOW(), '%s');" %usage
+    def insertEntry(self,id_no, usage):
+        self.time_stamp = time.strftime('%Y-%m-%d %H:%M:%S')
+        query = "INSERT INTO CPU (ID_NO, TIME_DATA, USE_PERCENT) VALUES ('%s', '%s', '%s');" \
+                  %(int(id_no), self.time_stamp, int(usage))
         self.executeCmd(query)
 
     def readAll(self):
         query = "SELECT * FROM CPU";
         self.cur.execute(query)
-        data=self.cur.fetchall()
-        print data
-        return data
+        self.data=self.cur.fetchall()
+        print self.data
+        return self.data
 
-sqlObj = sqlClass()
-sqlObj.createTable()
-usage=10.5
-sqlObj.insertEntry(usage)
