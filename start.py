@@ -15,8 +15,11 @@ class myThread (threading.Thread):
         print "Starting " + self.name
 	if (self.threadID == 1):
             #sysinfo()
-	    print "sysinfo thread" 
-	    time.sleep=10
+            i=0
+	    while (i <10):
+	        print "sysinfo thread\n" 
+	        time.sleep=5
+                i=i+1
         else:
             flask_server.main()
 	print "Exiting " + self.name
@@ -30,13 +33,20 @@ def print_time(threadName, delay, counter):
         counter -= 1
 
 
+def myfunc():
+    print "test threading!!!!!!!!!!!!!!!!!!!!!!!1"
 
 # Create new threads
-thread1 = myThread(1, "System Information Thread", 1)
-thread2 = myThread(2, "Flask Server", 2)
+#thread1 = myThread(1, "System Information Thread", 1)
+#thread2 = myThread(2, "Flask Server", 2)
+t1=threading.Thread(target=flask_server.main)
+t2=threading.Thread(target=myfunc)
+t1.start()
+t2.start()
+
 
 # Start new Threads
-thread1.start()
-thread2.start()
+#thread1.start()
+#thread2.start()
 
 print "Exiting Main Thread"
