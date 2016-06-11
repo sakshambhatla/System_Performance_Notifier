@@ -1,6 +1,7 @@
 import threading
 import time
 import flask_server
+import systeminfo
 
 exitFlag = 0
 #flaskObj=flask_server.main()
@@ -17,7 +18,7 @@ class myThread (threading.Thread):
             #sysinfo()
             i=0
 	    while (i <10):
-	        systeminfo()
+	        systeinfo.main()
         else:
             flask_server.main()
 	print "Exiting " + self.name
@@ -50,6 +51,7 @@ thread2 = myThread(2, "Flask Server", 2)
 
 # Start new Threads
 thread1.start()
+time.sleep(2)
 thread2.start()
 
 print "Exiting Main Thread"
